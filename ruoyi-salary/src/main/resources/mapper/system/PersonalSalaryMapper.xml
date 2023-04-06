@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.PersonalSalaryMapper">
+    
+    <resultMap type="PersonalSalary" id="PersonalSalaryResult">
+        <result property="id"    column="id"    />
+        <result property="personalId"    column="personal_id"    />
+        <result property="personalName"    column="personal_name"    />
+        <result property="departmentName"    column="department_name"    />
+        <result property="positionName"    column="position_name"    />
+        <result property="salaryDate"    column="salary_date"    />
+        <result property="basisSalary"    column="basis_salary"    />
+        <result property="subsidySalary"    column="subsidy_salary"    />
+        <result property="socialSalary"    column="social_salary"    />
+        <result property="providentFund"    column="provident_fund"    />
+        <result property="bonus"    column="bonus"    />
+        <result property="allSalary"    column="all_salary"    />
+    </resultMap>
+
+    <sql id="selectPersonalSalaryVo">
+        select id, personal_id, personal_name, department_name, position_name, salary_date, basis_salary, subsidy_salary, social_salary, provident_fund, bonus, all_salary from personal_salary
+    </sql>
+
+    <select id="selectPersonalSalaryList" parameterType="PersonalSalary" resultMap="PersonalSalaryResult">
+        <include refid="selectPersonalSalaryVo"/>
+        <where>  
+            <if test="personalId != null "> and personal_id = #{personalId}</if>
+            <if test="personalName != null  and personalName != ''"> and personal_name like concat('%', #{personalName}, '%')</if>
+            <if test="departmentName != null  and departmentName != ''"> and department_name like concat('%', #{departmentName}, '%')</if>
+            <if test="positionName != null  and positionName != ''"> and position_name like concat('%', #{positionName}, '%')</if>
+            <if test="salaryDate != null "> and salary_date = #{salaryDate}</if>
+            <if test="basisSalary != null "> and basis_salary = #{basisSalary}</if>
+            <if test="subsidySalary != null "> and subsidy_salary = #{subsidySalary}</if>
+            <if test="socialSalary != null "> and social_salary = #{socialSalary}</if>
+            <if test="providentFund != null "> and provident_fund = #{providentFund}</if>
+            <if test="bonus != null "> and bonus = #{bonus}</if>
+            <if test="allSalary != null "> and all_salary = #{allSalary}</if>
+        </where>
+    </select>
+    
+    <select id="selectPersonalSalaryById" parameterType="Long" resultMap="PersonalSalaryResult">
+        <include refid="selectPersonalSalaryVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertPersonalSalary" parameterType="PersonalSalary" useGeneratedKeys="true" keyProperty="id">
+        insert into personal_salary
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="personalId != null">personal_id,</if>
+            <if test="personalName != null">personal_name,</if>
+            <if test="departmentName != null">department_name,</if>
+            <if test="positionName != null">position_name,</if>
+            <if test="salaryDate != null">salary_date,</if>
+            <if test="basisSalary != null">basis_salary,</if>
+            <if test="subsidySalary != null">subsidy_salary,</if>
+            <if test="socialSalary != null">social_salary,</if>
+            <if test="providentFund != null">provident_fund,</if>
+            <if test="bonus != null">bonus,</if>
+            <if test="allSalary != null">all_salary,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="personalId != null">#{personalId},</if>
+            <if test="personalName != null">#{personalName},</if>
+            <if test="departmentName != null">#{departmentName},</if>
+            <if test="positionName != null">#{positionName},</if>
+            <if test="salaryDate != null">#{salaryDate},</if>
+            <if test="basisSalary != null">#{basisSalary},</if>
+            <if test="subsidySalary != null">#{subsidySalary},</if>
+            <if test="socialSalary != null">#{socialSalary},</if>
+            <if test="providentFund != null">#{providentFund},</if>
+            <if test="bonus != null">#{bonus},</if>
+            <if test="allSalary != null">#{allSalary},</if>
+         </trim>
+    </insert>
+
+    <update id="updatePersonalSalary" parameterType="PersonalSalary">
+        update personal_salary
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="personalId != null">personal_id = #{personalId},</if>
+            <if test="personalName != null">personal_name = #{personalName},</if>
+            <if test="departmentName != null">department_name = #{departmentName},</if>
+            <if test="positionName != null">position_name = #{positionName},</if>
+            <if test="salaryDate != null">salary_date = #{salaryDate},</if>
+            <if test="basisSalary != null">basis_salary = #{basisSalary},</if>
+            <if test="subsidySalary != null">subsidy_salary = #{subsidySalary},</if>
+            <if test="socialSalary != null">social_salary = #{socialSalary},</if>
+            <if test="providentFund != null">provident_fund = #{providentFund},</if>
+            <if test="bonus != null">bonus = #{bonus},</if>
+            <if test="allSalary != null">all_salary = #{allSalary},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deletePersonalSalaryById" parameterType="Long">
+        delete from personal_salary where id = #{id}
+    </delete>
+
+    <delete id="deletePersonalSalaryByIds" parameterType="String">
+        delete from personal_salary where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>
